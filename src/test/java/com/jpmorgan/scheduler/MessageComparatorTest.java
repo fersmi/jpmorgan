@@ -11,7 +11,6 @@ import org.junit.Test;
 import com.jpmorgan.scheduler.api.MessageToSend;
 import com.jpmorgan.scheduler.utils.MessageComparator;
 
-
 /**
  * Test scenario for {@link MessageComparator}
  * 
@@ -37,9 +36,9 @@ public class MessageComparatorTest extends AbstractTestCase {
 		messages.add(createMessage("text6", 2L, 50));
 		messages.add(createMessage("text4", 1L, 60));
 		messages.add(createMessage("text8", 3L, 70));
-		
+
 		Collections.sort(messages, comparator);
-		
+
 		int count = 1;
 		for (MessageToSend message : messages) {
 			Assert.assertEquals("text" + count, message.getText());

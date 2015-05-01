@@ -30,7 +30,7 @@ public class SchedulerTest extends AbstractTestCase {
 	}
 
 	@Test
-	public void testProcessMessageOneResource() throws IOException, InterruptedException {
+	public void testProcessMessageOrder() throws IOException, InterruptedException {
 		Gateway gateway1 = new RundomDelayGateway();
 
 		scheduler = new Scheduler(Arrays.asList(gateway1));
@@ -67,7 +67,7 @@ public class SchedulerTest extends AbstractTestCase {
 		}
 	}
 
-	// @Test
+	@Test
 	public void testProcessMessageTwoResources() throws IOException, InterruptedException {
 		Gateway gateway1 = new RundomDelayGateway();
 		Gateway gateway2 = new RundomDelayGateway();
@@ -98,12 +98,44 @@ public class SchedulerTest extends AbstractTestCase {
 
 		Thread.sleep(5000);
 
-		int order = 1;
-		for (Message message : messageCaptor) {
-			MessageToSend messageToSend = (MessageToSend) message;
-			Assert.assertEquals("text" + order, messageToSend.getText());
-			order++;
-		}
+		Assert.assertEquals(0, scheduler.getQueue().size());
+	}
+
+	@Test
+	public void testProcessMessageFiveResources() throws IOException, InterruptedException {
+		Gateway gateway1 = new RundomDelayGateway();
+		Gateway gateway2 = new RundomDelayGateway();
+		Gateway gateway3 = new RundomDelayGateway();
+		Gateway gateway4 = new RundomDelayGateway();
+		Gateway gateway5 = new RundomDelayGateway();
+
+		scheduler = new Scheduler(Arrays.asList(gateway1, gateway2, gateway3, gateway4, gateway5));
+
+		Thread thread = new Thread(scheduler);
+		thread.start();
+
+		Thread.sleep(200);
+
+		scheduler.receive(createMessage("text1", 1L, 0));
+		scheduler.receive(createMessage("text2", 1L, 10));
+		scheduler.receive(createMessage("text3", 1L, 20));
+		scheduler.receive(createMessage("text6", 2L, 30));
+		scheduler.receive(createMessage("text4", 1L, 40));
+		scheduler.receive(createMessage("text5", 1L, 50));
+		scheduler.receive(createMessage("text7", 2L, 60));
+		scheduler.receive(createMessage("text8", 2L, 70));
+		scheduler.receive(createMessage("text9", 3L, 80));
+		scheduler.receive(createMessage("text12", 4L, 90));
+		scheduler.receive(createMessage("text10", 3L, 100));
+		scheduler.receive(createMessage("text11", 3L, 110));
+		scheduler.receive(createMessage("text15", 5L, 120));
+		scheduler.receive(createMessage("text13", 4L, 130));
+		scheduler.receive(createMessage("text16", 5L, 140));
+		scheduler.receive(createMessage("text14", 4L, 150));
+
+		Thread.sleep(3000);
+
+		Assert.assertEquals(0, scheduler.getQueue().size());
 	}
 
 	private class RundomDelayGateway implements Gateway {

@@ -69,4 +69,9 @@ public class Scheduler implements Runnable {
 		}
 
 	}
+
+	public BlockingQueue<MessageToSend> getQueue() {
+		return queue;
+	}
+
 }
