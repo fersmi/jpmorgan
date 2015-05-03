@@ -6,7 +6,7 @@ import com.jpmorgan.scheduler.api.MessageToSend;
 
 /**
  * Comparator to order messages in queue. First order by group and after by
- * recieve time
+ * receive time
  * 
  * @author Jakub Ferschmann
  */

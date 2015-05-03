@@ -8,7 +8,7 @@ package com.jpmorgan.scheduler.api.ext;
 public interface Gateway {
 
 	/**
-	 * send messages to be processed by calling the Gateway's send(Message msg)
+	 * Send messages to be processed by calling the Gateway's send(Message msg)
 	 * method
 	 * 
 	 * @param message message to send

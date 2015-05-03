@@ -64,6 +64,11 @@ public class AvailableResource extends Thread implements Resource {
 					MessageToSend message = queue.take();
 
 					if (message != null) {
+						// If message is canceled? Skip it.
+						if (message.isCancellation()) {
+							continue;
+						}
+
 						canSendMessage = false;
 						// Set resource to notify if sending finished
 						message.setResource(this);

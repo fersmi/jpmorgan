@@ -24,18 +24,19 @@ public class MessageComparatorTest extends AbstractTestCase {
 	 * Test correct order by comparator
 	 * 
 	 * @throws IOException
+	 * @throws InterruptedException
 	 */
 	@Test
-	public void testCompare() throws IOException {
+	public void testCompare() throws IOException, InterruptedException {
 		List<MessageToSend> messages = new ArrayList<>();
-		messages.add(createMessage("text1", 1L, 0));
-		messages.add(createMessage("text5", 2L, 10));
-		messages.add(createMessage("text7", 3L, 20));
-		messages.add(createMessage("text2", 1L, 30));
-		messages.add(createMessage("text3", 1L, 40));
-		messages.add(createMessage("text6", 2L, 50));
-		messages.add(createMessage("text4", 1L, 60));
-		messages.add(createMessage("text8", 3L, 70));
+		messages.add(createMessage("text1", 1L, 0, false));
+		messages.add(createMessage("text5", 2L, 10, false));
+		messages.add(createMessage("text7", 3L, 20, false));
+		messages.add(createMessage("text2", 1L, 30, false));
+		messages.add(createMessage("text3", 1L, 40, false));
+		messages.add(createMessage("text6", 2L, 50, false));
+		messages.add(createMessage("text4", 1L, 60, false));
+		messages.add(createMessage("text8", 3L, 70, false));
 
 		Collections.sort(messages, comparator);
 

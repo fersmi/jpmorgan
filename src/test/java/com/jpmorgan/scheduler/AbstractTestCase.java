@@ -21,7 +21,7 @@ public abstract class AbstractTestCase {
 	/**
 	 * Create current time with extra milliseconds
 	 * 
-	 * @param addMillis
+	 * @param addMillis milliseconds added to current time
 	 * @return
 	 */
 	protected Date createTime(int addMillis) {
@@ -33,14 +33,18 @@ public abstract class AbstractTestCase {
 	/**
 	 * Create {@link Message} for tests
 	 * 
-	 * @param text
-	 * @param group
-	 * @param addMillis
+	 * @param text message text
+	 * @param group group name
+	 * @param addMillis milliseconds added to current time
+	 * @param termination indicates that message is the last one in the group
 	 * @return
+	 * @throws InterruptedException
 	 */
-	protected MessageToSend createMessage(String text, Long group, int addMillis) {
+	protected MessageToSend createMessage(String text, Long group, int addMillis, boolean termination) throws InterruptedException {
+		Thread.sleep(10);
 		MessageToSend message = new MessagetoSendImpl(text, group);
 		message.setRecieveTime(createTime(addMillis));
+		message.setTermination(termination);
 		return message;
 	}
 

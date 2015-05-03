@@ -8,7 +8,7 @@ package com.jpmorgan.scheduler.api;
 public interface Resource {
 
 	/**
-	 * When message was successfully send, send next message in queue
+	 * When message was successfully sent, send next message in queue
 	 * 
 	 * @param message message that was sent
 	 */

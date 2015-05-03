@@ -4,6 +4,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
@@ -38,10 +39,17 @@ public class AvailableResourceTest extends AbstractTestCase {
 		resource = new AvailableResource("Gateway resource", queue, gateway);
 	}
 
+	/**
+	 * Test scenario that two messages received and one send, because the
+	 * resource is busy
+	 * 
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
 	@Test
 	public void testProcessMessage() throws IOException, InterruptedException {
 
-		MessageToSend message = createMessage("text", 1L, 0);
+		MessageToSend message = createMessage("text", 1L, 0, false);
 		when(queue.take()).thenReturn(message);
 
 		// get the first message from queue and send
@@ -64,4 +72,34 @@ public class AvailableResourceTest extends AbstractTestCase {
 
 	}
 
+	/**
+	 * Test scenario that message is canceled
+	 * 
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	@Test
+	public void testCancellationMessage() throws IOException, InterruptedException {
+
+		MessageToSend message = createMessage("text", 1L, 0, false);
+		message.setCancellation(true);
+
+		when(queue.take()).thenReturn(message);
+
+		// get the first message from queue and send
+		resource.start();
+
+		Thread.sleep(500);
+		verifyNoMoreInteractions(gateway);
+
+	}
+
+	@Test
+	public void testEmptyQueue() throws IOException, InterruptedException {
+		// get the first message from queue and send
+		resource.start();
+
+		Thread.sleep(500);
+		verifyNoMoreInteractions(gateway);
+	}
 }
